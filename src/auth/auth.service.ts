@@ -2,7 +2,7 @@ import {
   BadRequestException,
   Injectable,
   //   InternalServerErrorException,
-  //   NotFoundException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { SignupDto } from './dtos/signup.dto';
@@ -80,24 +80,29 @@ export class AuthService {
     };
   }
 
-  //   async changePassword(userId, oldPassword: string, newPassword: string) {
-  //     //Find the user
-  //     const user = await this.UserModel.findById(userId);
-  //     if (!user) {
-  //       throw new NotFoundException('User not found...');
-  //     }
+  async changePassword(userId, oldPassword: string, newPassword: string) {
+    //Find the user
+    const user = await this.UserModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found...');
+    }
 
-  //     //Compare the old password with the password in DB
-  //     const passwordMatch = await bcrypt.compare(oldPassword, user.password);
-  //     if (!passwordMatch) {
-  //       throw new UnauthorizedException('Wrong credentials');
-  //     }
+    //Compare the old password with the password in DB
+    const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!passwordMatch) {
+      throw new UnauthorizedException('Wrong credentials');
+    }
 
-  //     //Change user's password
-  //     const newHashedPassword = await bcrypt.hash(newPassword, 10);
-  //     user.password = newHashedPassword;
-  //     await user.save();
-  //   }
+    //Change user's password
+    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = newHashedPassword;
+    await this.UserModel.findByIdAndUpdate(
+      userId,
+      { $set: { password: newHashedPassword } },
+      { new: true, runValidators: true }, // Optional: returns the updated doc and runs schema checks
+    );
+    return { message: 'Password changed successfully' };
+  }
 
   //   async forgotPassword(email: string) {
   //     //Check that user exists

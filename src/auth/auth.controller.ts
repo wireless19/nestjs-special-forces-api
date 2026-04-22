@@ -3,14 +3,16 @@ import {
   Controller,
   Post,
   ValidationPipe,
-  // Put, Req, UseGuards
+  Req,
+  UseGuards,
+  Put,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dtos/signup.dto';
 import { LoginDto } from './dtos/login.dto';
 import { RefreshTokenDto } from './dtos/refresh-tokens.dto';
-// import { ChangePasswordDto } from './dtos/change-password.dto';
-// import { AuthenticationGuard } from 'src/guards/authentication.guard';
+import { ChangePasswordDto } from './dtos/change-password.dto';
+import { AuthenticationGuard } from 'src/guards/auth.guard';
 // import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 // import { ResetPasswordDto } from './dtos/reset-password.dto';
 
@@ -35,18 +37,18 @@ export class AuthController {
     return this.authService.refreshTokens(refreshTokenDto.refreshToken);
   }
 
-  //   @UseGuards(AuthenticationGuard)
-  //   @Put('change-password')
-  //   async changePassword(
-  //     @Body() changePasswordDto: ChangePasswordDto,
-  //     @Req() req,
-  //   ) {
-  //     return this.authService.changePassword(
-  //       req.userId,
-  //       changePasswordDto.oldPassword,
-  //       changePasswordDto.newPassword,
-  //     );
-  //   }
+  @UseGuards(AuthenticationGuard)
+  @Put('change-password')
+  async changePassword(
+    @Body() changePasswordDto: ChangePasswordDto,
+    @Req() req,
+  ) {
+    return this.authService.changePassword(
+      req.userId,
+      changePasswordDto.oldPassword,
+      changePasswordDto.newPassword,
+    );
+  }
 
   //   @Post('forgot-password')
   //   async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
