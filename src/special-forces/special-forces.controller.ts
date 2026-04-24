@@ -20,9 +20,10 @@ import { CreateSpecialForceDto } from './dto/create-special-force.dto';
 import { UpdateSpecialForceDto } from './dto/update-special-force.dto';
 import { SpecialForcesService } from './special-forces.service';
 // import { CombatGuard } from 'src/combat/combat.guard';
-import { AuthenticationGuard } from 'src/guards/auth.guard';
+import { AuthenticationGuard } from 'src/guards/authentication.guard';
+import { AuthorizationGuard } from 'src/guards/authorization.guard';
 
-@UseGuards(AuthenticationGuard) //protect all special forces routes
+@UseGuards(AuthenticationGuard, AuthorizationGuard) //protect all special forces routes
 @Controller('special-forces')
 export class SpecialForcesController {
   constructor(private readonly specialForcesService: SpecialForcesService) {}

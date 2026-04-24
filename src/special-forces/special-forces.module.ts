@@ -10,9 +10,11 @@ import {
 } from 'src/schemas/SpecialForceSettings.schema';
 import { SpecialForcesController } from './special-forces.controller';
 import { SpecialForcesService } from './special-forces.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     MongooseModule.forFeature([
       {
         name: SpecialForce.name,

@@ -9,11 +9,11 @@ import {
 } from './schemas/refresh-token.schema';
 import { ResetToken, ResetTokenSchema } from './schemas/reset-token.schema';
 import { MailService } from 'src/services/mail.service';
-// import { RolesModule } from 'src/roles/roles.module';
+import { RolesModule } from 'src/roles/roles.module';
 
 @Module({
   imports: [
-    // RolesModule,
+    RolesModule,
     MongooseModule.forFeature([
       {
         name: User.name,

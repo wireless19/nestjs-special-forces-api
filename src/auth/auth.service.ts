@@ -20,7 +20,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { nanoid } from 'nanoid';
 import { ResetToken } from './schemas/reset-token.schema';
 import { MailService } from 'src/services/mail.service';
-// import { RolesService } from 'src/roles/roles.service';
+import { RolesService } from 'src/roles/roles.service';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +32,7 @@ export class AuthService {
     private ResetTokenModel: Model<ResetToken>,
     private jwtService: JwtService,
     private mailService: MailService,
-    // private rolesService: RolesService,
+    private rolesService: RolesService,
   ) {}
 
   async signup(signupData: SignupDto) {
@@ -190,12 +190,13 @@ export class AuthService {
     );
   }
 
-  //   async getUserPermissions(userId: string) {
-  //     const user = await this.UserModel.findById(userId);
+  async getUserPermissions(userId: string) {
+    const user = await this.UserModel.findById(userId);
 
-  //     if (!user) throw new BadRequestException();
+    if (!user) throw new BadRequestException();
 
-  //     const role = await this.rolesService.getRoleById(user.roleId.toString());
-  //     return role.permissions;
-  //   }
+    const role = await this.rolesService.getRoleById(user.roleId.toString());
+    console.log('role', role);
+    return role?.permissions;
+  }
 }

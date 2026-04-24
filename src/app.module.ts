@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from './config/config';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import config from './config/config';
       inject: [ConfigService],
     }),
     SpecialForcesModule,
+    RolesModule,
     AuthModule,
   ],
   controllers: [AppController],
