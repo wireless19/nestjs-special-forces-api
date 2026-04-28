@@ -19,14 +19,26 @@ import mongoose from 'mongoose';
 import { CreateSpecialForceDto } from './dto/create-special-force.dto';
 import { UpdateSpecialForceDto } from './dto/update-special-force.dto';
 import { SpecialForcesService } from './special-forces.service';
-// import { CombatGuard } from 'src/combat/combat.guard';
+
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
 
+import { Permissions } from 'src/decorators/permissions.decorator';
+import { Resource } from 'src/roles/enums/resource.enum';
+import { Action } from 'src/roles/enums/action.enum';
+
 @UseGuards(AuthenticationGuard, AuthorizationGuard) //protect all special forces routes
+@Permissions([
+  {
+    resource: Resource.specialForces,
+    actions: [Action.read, Action.create],
+  },
+])
 @Controller('special-forces')
 export class SpecialForcesController {
   constructor(private readonly specialForcesService: SpecialForcesService) {}
+
+  //   @Permissions([{ resource: 'specialForces', actions: ['read'] }])
   @Get()
   getSpecialForces(@Query('weapon') weapon: string) {
     // const service = new SpecialForcesService();
@@ -52,6 +64,7 @@ export class SpecialForcesController {
     return this.specialForcesService.createSpecialForce(createSpecialForceDto);
   }
 
+  //   @Permissions([{ resource: Resource.specialForces, actions: [Action.read] }])
   @Patch(':id')
   async updateSpecialForce(
     @Param('id') id: string,

@@ -37,6 +37,7 @@ export class AuthorizationGuard implements CanActivate {
       const userPermissions = await this.authService.getUserPermissions(
         request.userId,
       );
+      console.log('userPermissions', userPermissions);
 
       for (const routePermission of routePermissions) {
         const userPermission = userPermissions?.find(
